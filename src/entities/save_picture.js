@@ -33,6 +33,7 @@ module.exports = new EntitySchema({
       joinColumn: {
         name: "hinh_id",
       },
+      onDelete: "CASCADE",
       eager: true,
     },
   },

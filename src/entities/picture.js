@@ -30,6 +30,7 @@ module.exports = new EntitySchema({
     binh_luan: {
       type: "one-to-many",
       target: "BinhLuan",
+      inverseSide: "hinh", 
     },
     luu_anh: {
       type: "one-to-many",

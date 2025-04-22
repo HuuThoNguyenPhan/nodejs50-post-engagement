@@ -10,7 +10,9 @@ module.exports = new EntitySchema({
       generated: true,
     },
     ngay_binh_luan: {
-      type: "date",
+      type: "timestamp",
+      nullable: false,
+      default: () => "CURRENT_TIMESTAMP",
     },
     noi_dung: {
       type: "varchar",
@@ -30,6 +32,7 @@ module.exports = new EntitySchema({
       joinColumn: {
         name: "hinh_id",
       },
+      onDelete: "CASCADE",
     },
   },
 });

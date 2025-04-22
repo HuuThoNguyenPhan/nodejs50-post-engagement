@@ -4,7 +4,7 @@ module.exports.uploadBase64 = async (req, res) => {
   const result = await uploadBase64(req.body.file_base64, req.body.folder);
 
   return res.status(201).json({
-    message: "Success",
+    message: "success",
     url: result.secure_url,
     public_id: result.public_id,
   });

@@ -43,7 +43,7 @@ module.exports.register = async (req, res) => {
     nguoi_dung_id: newUser.nguoi_dung_id,
     hinh_id: newPic.hinh_id,
   });
-  return res.status(201).json({ message: "Success" });
+  return res.status(201).json({ message: "success" });
 };
 
 module.exports.login = async (req, res) => {
@@ -51,7 +51,7 @@ module.exports.login = async (req, res) => {
   const userEnty = await dataSource.getRepository(user).findOneBy({ email });
   if (!userEnty) return res.status(404).json({ message: "Email not Found!" });
 
-  const isMatch = await bcrypt.compare(mat_khau, userEnty.mat_khau);
+  const isMatch = bcrypt.compare(mat_khau, userEnty.mat_khau);
   if (!isMatch) return res.status(400).json({ message: "Wrong password!" });
 
   const token = createToken({

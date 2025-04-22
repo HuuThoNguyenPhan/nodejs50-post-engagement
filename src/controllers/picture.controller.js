@@ -4,6 +4,22 @@ const picture = require("../entities/picture");
 const save_picture = require("../entities/save_picture");
 const { uploadBase64 } = require("./upload.controller");
 
+module.exports.getictureById = async (req, res) => {
+  const { hinh_id } = req.query;
+
+  if(!hinh_id){
+    return res.status(400).json({ message: "hinh_id is null or invalid!" });
+  }
+
+  const picture = await dataSource.getRepository(save_picture).findOne({
+    where: {
+      hinh_id: parseInt(hinh_id),
+    },
+  });
+
+  return res.status(201).json({ picture });
+};
+
 module.exports.getListPicture = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
@@ -30,7 +46,7 @@ module.exports.searchPicByName = async (req, res) => {
 
   const list = await dataSource.getRepository(picture).find({
     where: {
-      ten_hinh: ILike(`%${search_name}%`) 
+      ten_hinh: ILike(`%${search_name}%`),
     },
     order: {
       hinh_id: "DESC",
@@ -65,10 +81,11 @@ module.exports.addPicture = async (req, res) => {
   });
   await dataSource.getRepository(picture).save(newPic);
 
-  await dataSource.getRepository(save_picture).save({
-    hinh_id: newPic.hinh_id,
-    nguoi_dung: req.user,
-  });
+  return res.status(201).json({ message: "success" });
+};
 
-  return res.status(201).json({ message: "Success" });
+module.exports.deletePicture = async (req, res) => {
+  const { hinh_id } = req.query;
+  await dataSource.getRepository(picture).delete({ hinh_id });
+  return res.status(201).json({ message: "success" });
 };
