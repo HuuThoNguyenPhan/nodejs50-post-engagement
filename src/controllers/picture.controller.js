@@ -3,11 +3,12 @@ const dataSource = require("../config/db");
 const picture = require("../entities/picture");
 const save_picture = require("../entities/save_picture");
 const { uploadBase64 } = require("./upload.controller");
+const comment = require("../entities/comment");
 
-module.exports.getictureById = async (req, res) => {
+module.exports.getpictureById = async (req, res) => {
   const { hinh_id } = req.query;
 
-  if(!hinh_id){
+  if (!hinh_id) {
     return res.status(400).json({ message: "hinh_id is null or invalid!" });
   }
 
@@ -18,6 +19,23 @@ module.exports.getictureById = async (req, res) => {
   });
 
   return res.status(201).json({ picture });
+};
+
+module.exports.getCommentpictureById = async (req, res) => {
+  const { hinh_id } = req.query;
+
+  if (!hinh_id) {
+    return res.status(400).json({ message: "hinh_id is null or invalid!" });
+  }
+
+  const data = await dataSource.getRepository(picture).findOne({
+    where: {
+      hinh_id: parseInt(hinh_id),
+    },
+    relations: ["binh_luan"],
+  });
+
+  return res.status(201).json({ data: data.binh_luan });
 };
 
 module.exports.getListPicture = async (req, res) => {
